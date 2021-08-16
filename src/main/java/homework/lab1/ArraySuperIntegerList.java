@@ -46,7 +46,7 @@ public class ArraySuperIntegerList implements SuperIntegerList {
         boolean isValueFound;
 
         do {
-            // Remove all values in array
+            // Remove all values that match the provided value
             isValueFound = false;
 
             for (int i = 0; i < integers.length; i++) {
@@ -56,11 +56,15 @@ public class ArraySuperIntegerList implements SuperIntegerList {
                     break;
                 }
             }
-        } while (!isValueFound);
+        } while (isValueFound);
     }
 
     @Override
     public int get(int index) {
+        if (index < 0) {
+            throw new IllegalArgumentException();
+        }
+
         if (index >= integers.length) {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -71,7 +75,7 @@ public class ArraySuperIntegerList implements SuperIntegerList {
     @Override
     public void printAll() {
         for (int integer : integers) {
-            System.out.println(integer);
+            System.out.print(integer + " ");
         }
     }
 }
