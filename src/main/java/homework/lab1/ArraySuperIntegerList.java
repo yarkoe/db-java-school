@@ -2,19 +2,36 @@ package homework.lab1;
 
 public class ArraySuperIntegerList implements SuperIntegerList {
     private int[] integers;
+    private int currentLength, maxLength;
+    final int INIT_MAX_LENGTH = 10;
 
-    public ArraySuperIntegerList(int[] initIntegers) {
-        this.integers = initIntegers;
+    public ArraySuperIntegerList() {
+        integers = new int[INIT_MAX_LENGTH];
+        maxLength = INIT_MAX_LENGTH;
+        currentLength = 0;
+    }
+
+    public static ArraySuperIntegerList of(int[] initIntegers) {
+        var arraySuperIntegerList = new ArraySuperIntegerList();
+
+        for (int initInteger : initIntegers) {
+            arraySuperIntegerList.add(initInteger);
+        }
+
+        return arraySuperIntegerList;
     }
 
     @Override
     public void add(int number) {
-        var integersWithAdd = new int[integers.length + 1];
+        currentLength++;
+        if (currentLength >= maxLength) {
+            maxLength *= 2;
+            var integersWithAdd = new int[maxLength];
+            System.arraycopy(integers, 0, integersWithAdd, 0, currentLength - 1);
+            integers = integersWithAdd;
+        }
 
-        System.arraycopy(integers, 0, integersWithAdd, 0, integers.length);
-        integersWithAdd[integers.length] = number;
-
-        integers = integersWithAdd;
+        integers[currentLength - 1] = number;
     }
 
     @Override
@@ -23,22 +40,13 @@ public class ArraySuperIntegerList implements SuperIntegerList {
             throw new IllegalArgumentException();
         }
 
-        if (index >= integers.length) {
+        if (index >= currentLength) {
             return;
         }
 
-        var integersWithRemove = new int[integers.length - 1];
-        int integersWithRemoveIndex = 0;
-        for (int i = 0; i < integers.length; i++) {
-            if (index == i) {
-                continue;
-            }
+        System.arraycopy(integers, index + 1, integers, index, currentLength - 1 - index);
 
-            integersWithRemove[integersWithRemoveIndex] = integers[i];
-            integersWithRemoveIndex++;
-        }
-
-        integers = integersWithRemove;
+        currentLength--;
     }
 
     @Override
@@ -49,7 +57,7 @@ public class ArraySuperIntegerList implements SuperIntegerList {
             // Remove all values that match the provided value
             isValueFound = false;
 
-            for (int i = 0; i < integers.length; i++) {
+            for (int i = 0; i < currentLength; i++) {
                 if (integers[i] == value) {
                     this.removeByIndex(i);
                     isValueFound = true;
@@ -65,7 +73,7 @@ public class ArraySuperIntegerList implements SuperIntegerList {
             throw new IllegalArgumentException();
         }
 
-        if (index >= integers.length) {
+        if (index >= currentLength) {
             throw new ArrayIndexOutOfBoundsException();
         }
 
@@ -74,8 +82,9 @@ public class ArraySuperIntegerList implements SuperIntegerList {
 
     @Override
     public void printAll() {
-        for (int integer : integers) {
-            System.out.print(integer + " ");
+        for (int i = 0; i < currentLength; i++) {
+            System.out.print(integers[i] + " ");
+
         }
     }
 }

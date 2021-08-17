@@ -2,7 +2,7 @@ package homework.lab1;
 
 public class Main {
     public static void main(String[] args) {
-        SuperIntegerList superIntegerList = new ArraySuperIntegerList(new int[]{1, 2, 3});
+        SuperIntegerList superIntegerList = ArraySuperIntegerList.of(new int[]{1, 2, 3});
 
         superIntegerList.printAll(); // should be 1 2 3
 
@@ -37,5 +37,21 @@ public class Main {
             System.out.println("Can't get value that out of bounds");
         }
 
+        System.out.println();
+
+        SuperIntegerList bigSuperIntegerList = ArraySuperIntegerList.of(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11});
+        bigSuperIntegerList.printAll(); // should be 1..11
+
+        System.out.println();
+
+        bigSuperIntegerList.removeByIndex(10);
+        bigSuperIntegerList.printAll();
+
+        System.out.println();
+
+        for (int i = 0; i < 20; i++) {
+            bigSuperIntegerList.add(i);
+        }
+        bigSuperIntegerList.printAll(); // should be 1..11 0 1 .. 19
     }
 }
