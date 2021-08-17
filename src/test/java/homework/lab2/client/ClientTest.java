@@ -22,6 +22,19 @@ class ClientTest {
     }
 
     @Test
+    void testClientSetSalary() {
+        var clientBuilder = new Client.ClientBuilder();
+
+        var clientContacts = new Contacts(new Name("FirstName", "LastName"));
+        Client client = clientBuilder.setContacts(clientContacts)
+                            .setDebt(5)
+                            .setSalary(new Salary(50, 5))
+                            .build();
+
+        assertEquals(new Salary(50, 5), client.getSalary());
+    }
+
+    @Test
     void testContactsException() {
         var clientBuilder = new Client.ClientBuilder();
 
