@@ -12,6 +12,10 @@ public class ArraySuperIntegerList implements SuperIntegerList {
     }
 
     public static ArraySuperIntegerList of(int[] initIntegers) {
+        if (initIntegers == null) {
+            throw new IllegalArgumentException();
+        }
+
         var arraySuperIntegerList = new ArraySuperIntegerList();
 
         for (int initInteger : initIntegers) {
