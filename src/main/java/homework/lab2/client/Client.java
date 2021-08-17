@@ -41,7 +41,7 @@ public class Client {
 
         public Client build() {
             if (contacts == null) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("You should set contacts");
             }
 
             return new Client(contacts, salary, debt);
