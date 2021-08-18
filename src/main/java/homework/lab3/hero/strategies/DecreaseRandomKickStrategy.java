@@ -5,17 +5,11 @@ import homework.lab3.hero.Hero;
 import java.util.Random;
 
 public class DecreaseRandomKickStrategy implements KickStrategy {
-    private final Hero owner;
     private final Random random = new Random();
 
-
-    public DecreaseRandomKickStrategy(Hero owner) {
-        this.owner = owner;
-    }
-
     @Override
-    public void kick(Hero enemy) {
-        int kickPower = random.nextInt(owner.getPower());
+    public void kick(Hero hero, Hero enemy) {
+        int kickPower = random.nextInt(hero.getPower());
         enemy.decreaseHp(kickPower);
     }
 }
