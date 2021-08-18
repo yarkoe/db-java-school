@@ -3,7 +3,6 @@ package homework.lab3.hero;
 import com.github.javafaker.Faker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
