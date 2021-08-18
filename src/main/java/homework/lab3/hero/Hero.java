@@ -15,13 +15,7 @@ public abstract class Hero {
         this.name = name;
         this.type = type;
         this.kickStrategy = kickStrategy;
-
-        initPower();
-        initHp();
     }
-
-    abstract void initPower();
-    abstract void initHp();
 
     public int getPower() {
         return power;
