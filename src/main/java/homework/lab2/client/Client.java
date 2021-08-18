@@ -21,19 +21,19 @@ public class Client {
         private Salary salary = DEFAULT_SALARY;
         private int debt;
 
-        public ClientBuilder setContacts(Contacts contacts) {
+        public ClientBuilder contacts(Contacts contacts) {
             this.contacts = contacts;
 
             return this;
         }
 
-        public ClientBuilder setDebt(int debt) {
+        public ClientBuilder debt(int debt) {
             this.debt = debt;
 
             return this;
         }
 
-        public ClientBuilder setSalary(Salary salary) {
+        public ClientBuilder salary(Salary salary) {
             this.salary = salary;
 
             return this;

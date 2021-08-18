@@ -1,6 +1,5 @@
 package homework.lab2.client;
 
-import homework.lab2.client.Client;
 import org.junit.jupiter.api.Test;
 
 import static homework.lab2.client.SalaryConstants.PROGRAMMER_SALARY;
@@ -14,7 +13,7 @@ class ClientTest {
 
         var clientContacts = new Contacts(new Name("FirstName", "LastName"));
         clientContacts.setPhoneNumber("+9999999999");
-        Client client = clientBuilder.setContacts(clientContacts).setDebt(5).build();
+        Client client = clientBuilder.contacts(clientContacts).debt(5).build();
 
         assertEquals(new Name("FirstName", "LastName"), client.getContacts().getName());
         assertEquals(5, client.getDebt());
@@ -26,10 +25,10 @@ class ClientTest {
         var clientBuilder = new Client.ClientBuilder();
 
         var clientContacts = new Contacts(new Name("FirstName", "LastName"));
-        Client client = clientBuilder.setContacts(clientContacts)
-                            .setDebt(5)
-                            .setSalary(new Salary(50, 5))
-                            .build();
+        Client client = clientBuilder.contacts(clientContacts)
+                .debt(5)
+                .salary(new Salary(50, 5))
+                .build();
 
         assertEquals(new Salary(50, 5), client.getSalary());
     }
