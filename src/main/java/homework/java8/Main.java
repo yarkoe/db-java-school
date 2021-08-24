@@ -17,5 +17,11 @@ public class Main {
 
         Map<String, Employee> mapEmployees = EmployeeUtils.listToMap(employees);
         System.out.println("mapEmployees = " + mapEmployees);
+
+        System.out.println();
+
+        Map<SeniorStatus, Long> employeeNumberGroupedBySeniorStatus = EmployeeUtils.getEmployeeNumberGroupedBySeniorStatus(employees);
+        System.out.println("employeeNumberGroupedBySeniorStatus = " + employeeNumberGroupedBySeniorStatus);
+
     }
 }
