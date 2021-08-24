@@ -12,12 +12,8 @@ public enum SeniorStatus {
     private final int maxSalary;
 
     public static SeniorStatus getBySalary(int salary) {
-        if (salary < 0) {
-            throw new IllegalArgumentException();
-        }
-
         return Arrays.stream(values())
                 .filter(seniorStatus -> seniorStatus.minSalary <= salary && seniorStatus.maxSalary >= salary)
-                .findFirst().get();
+                .findFirst().orElseThrow(IllegalArgumentException::new);
     }
 }
