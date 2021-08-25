@@ -16,10 +16,10 @@ public class BlackFridayService {
         LocalDate startDate = LocalDate.of(startYear, 1, 1);
         LocalDate endDate = LocalDate.of(endYear, 1, 1);
 
-        Map<Integer, Long> year2BlackFridayNumber = Stream.iterate(startDate, date -> date.plusDays(1))
+
+        Map<Integer, Long> year2BlackFridayNumber = startDate.datesUntil(endDate)
                 .filter(date -> date.getDayOfMonth() == 13)
                 .filter(date -> date.getDayOfWeek() == DayOfWeek.FRIDAY)
-                .takeWhile(endDate::isAfter)
                 .collect(Collectors.groupingBy(LocalDate::getYear, Collectors.counting()));
 
         year2BlackFridayNumber.entrySet().stream()
