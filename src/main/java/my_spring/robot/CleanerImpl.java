@@ -1,6 +1,6 @@
 package my_spring.robot;
 
-import my_spring.object_factory.RandomInteger;
+import my_spring.object_factory.annotation.RandomInteger;
 
 public class CleanerImpl implements Cleaner {
     @RandomInteger(min=1, max=5)
