@@ -1,6 +1,10 @@
 package my_spring.object_factory;
 
+import homework.lab3.RandomUtils;
 import lombok.SneakyThrows;
+
+import java.lang.instrument.IllegalClassFormatException;
+import java.lang.reflect.Field;
 
 public class ObjectFactory {
     private final static ObjectFactory instance = new ObjectFactory();
@@ -16,6 +20,21 @@ public class ObjectFactory {
             type = objectFactoryConfiguration.getInstance(type);
         }
 
-        return type.getDeclaredConstructor().newInstance();
+        T t = type.getDeclaredConstructor().newInstance();
+
+        for (Field field : type.getDeclaredFields()) {
+            RandomInteger randomIntegerAnnotation = field.getAnnotation(RandomInteger.class);
+            if (randomIntegerAnnotation == null) {
+                continue;
+            }
+
+            int min = randomIntegerAnnotation.min();
+            int max = randomIntegerAnnotation.max();
+            int randomInteger = RandomUtils.generateIntBetweenBorders(min, max);
+            field.setAccessible(true);
+            field.set(t, randomInteger);
+        }
+
+        return t;
     }
 }

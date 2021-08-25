@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         ObjectFactory objectFactory = ObjectFactory.getInstance();
 
-        Speaker speaker = objectFactory.createObject(Speaker.class);
-        speaker.speak("Hello");
+        Cleaner cleaner = objectFactory.createObject(Cleaner.class);
+        cleaner.clean();
     }
 }
