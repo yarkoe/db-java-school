@@ -1,8 +1,14 @@
 package my_spring.robot;
 
+import lombok.NoArgsConstructor;
+import my_spring.object_factory.Inject;
+
+@NoArgsConstructor
 public class IRobot {
-    private final Speaker speaker = new ConsoleSpeaker();
-    private final Cleaner cleaner = new CleanerImpl();
+    @Inject
+    private Speaker speaker;
+    @Inject
+    private Cleaner cleaner;
 
     public void cleanRoom() {
         speaker.speak("Я начал работать");
