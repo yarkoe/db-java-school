@@ -1,10 +1,7 @@
 package homework.lab3;
 
-import design_patterns.adapter.Costable;
-
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class RandomUtils {
     private static Random random = new Random();
