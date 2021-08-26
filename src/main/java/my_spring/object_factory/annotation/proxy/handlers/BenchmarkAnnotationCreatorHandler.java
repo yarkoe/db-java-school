@@ -1,6 +1,9 @@
 package my_spring.object_factory.annotation.proxy.handlers;
 
+import lombok.SneakyThrows;
 import my_spring.object_factory.annotation.proxy.Benchmark;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -17,29 +20,42 @@ public class BenchmarkAnnotationCreatorHandler implements ProxyAnnotationCreator
         fillMethodNames(obj, methodWithBenchmarkAnnotationNames);
 
         if (!methodWithBenchmarkAnnotationNames.isEmpty()) {
-            return createProxyWithBenchmarkMethods(obj, methodWithBenchmarkAnnotationNames);
+            if (obj.getClass().getInterfaces().length != 0) {
+                return createProxyByInterface(obj, methodWithBenchmarkAnnotationNames);
+            }
+
+            return createProxyByClass(obj, methodWithBenchmarkAnnotationNames);
         }
 
         return obj;
     }
 
-    private <T> T createProxyWithBenchmarkMethods(T obj, Set<String> methodWithBenchmarkAnnotationNames) {
+    @SneakyThrows
+    private <T> T handleBenchmark(T obj, Method method, Object[] args, Set<String> methodNames) {
+        if (methodNames.contains(method.getName())) {
+            System.out.println("BENCHMARK STARTED FOR METHOD " + method.getName());
+            long start = System.nanoTime();
+            Object retVal = method.invoke(obj, args);
+            long end = System.nanoTime();
+            System.out.println(end - start);
+            System.out.println("BENCHMARK ENDED FOR METHOD " + method.getName());
+
+            return (T) retVal;
+        }
+
+        return (T) method.invoke(obj, args);
+    }
+
+    private <T> T createProxyByInterface(T obj, Set<String> methodNames) {
         return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 obj.getClass().getInterfaces(),
-                (proxy, method, args) -> {
-                    if (methodWithBenchmarkAnnotationNames.contains(method.getName())) {
-                        System.out.println("BENCHMARK STARTED FOR METHOD " + method.getName());
-                        long start = System.nanoTime();
-                        Object retVal = method.invoke(obj, args);
-                        long end = System.nanoTime();
-                        System.out.println(end - start);
-                        System.out.println("BENCHMARK ENDED FOR METHOD " + method.getName());
-
-                        return retVal;
-                    }
-                    return method.invoke(obj, args);
-                }
+                (proxy, method, args) -> handleBenchmark(obj, method, args, methodNames)
         );
+    }
+
+    private <T> T createProxyByClass(T obj, Set<String> methodNames) {
+        return (T) Enhancer.create(obj.getClass(),
+                (MethodInterceptor) (o, method, args, proxy) -> handleBenchmark(obj, method, args, methodNames));
     }
 
     private <T> void fillMethodNames(T obj, Set<String> methodWithBenchmarkAnnotationNames) {
