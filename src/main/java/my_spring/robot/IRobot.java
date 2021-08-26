@@ -15,8 +15,10 @@ public class IRobot {
     }
 
     public void cleanRoom() {
+        speaker.welcome("Привет!");
         speaker.speak("Я начал работать");
         cleaner.clean();
         speaker.speak("Я закончил работать");
+        speaker.sayGoodbye("Прощай!");
     }
 }

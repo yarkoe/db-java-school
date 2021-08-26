@@ -1,5 +1,7 @@
 package my_spring.robot;
 
 public interface Speaker {
-    public void speak(String str);
+    void speak(String str);
+    void welcome(String welcome);
+    void sayGoodbye(String goodbye);
 }
