@@ -1,13 +1,13 @@
 package my_spring.robot;
 
 import lombok.NoArgsConstructor;
-import my_spring.object_factory.annotation.Inject;
+import my_spring.object_factory.annotation.InjectByType;
 
 @NoArgsConstructor
 public class IRobot {
-    @Inject
+    @InjectByType
     private Speaker speaker;
-    @Inject
+    @InjectByType
     private Cleaner cleaner;
 
     public void init() {
