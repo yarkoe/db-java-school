@@ -27,19 +27,20 @@ public class ObjectFactory {
 
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException();
+        }
+
         if (type.isInterface()) {
             type = objectFactoryConfiguration.getImplementation(type);
+            if (type == null) {
+                throw new IllegalStateException();
+            }
         }
 
         T declaredObject = type.getDeclaredConstructor().newInstance();
 
-        for (Field field : type.getDeclaredFields()) {
-            annotationsProcessor.processField(declaredObject, field);
-        }
-
-        for (Method method : type.getDeclaredMethods()) {
-            annotationsProcessor.processMethod(declaredObject, method);
-        }
+        annotationsProcessor.process(declaredObject);
 
         return declaredObject;
     }

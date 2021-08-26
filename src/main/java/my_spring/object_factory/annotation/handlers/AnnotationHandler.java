@@ -1,8 +1,8 @@
-package my_spring.object_factory.annotation;
+package my_spring.object_factory.annotation.handlers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public interface AnnotationHandler {
-    void handle(Object declaringObject, Field field);
+    void handle(Object declaredObject);
 }
