@@ -34,9 +34,6 @@ public class ObjectFactory {
 
         if (type.isInterface()) {
             type = objectFactoryConfiguration.getImplementation(type);
-            if (type == null) {
-                throw new IllegalStateException();
-            }
         }
 
         T declaredObject = type.getDeclaredConstructor().newInstance();
