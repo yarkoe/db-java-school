@@ -5,6 +5,7 @@ import my_spring.object_factory.annotation.handlers.AnnotationHandler;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,9 @@ public class AnnotationsProcessorImpl implements AnnotationsProcessor {
     @SneakyThrows
     public AnnotationsProcessorImpl() {
         for (var handler : scanner.getSubTypesOf(AnnotationHandler.class) ) {
-            annotationHandlers.add(handler.getDeclaredConstructor().newInstance());
+            if (!Modifier.isAbstract(handler.getModifiers())) {
+                annotationHandlers.add(handler.getDeclaredConstructor().newInstance());
+            }
         }
     }
 

@@ -10,6 +10,10 @@ public class IRobot {
     @Inject
     private Cleaner cleaner;
 
+    public void init() {
+        System.out.println("INIT");
+    }
+
     public void cleanRoom() {
         speaker.speak("Я начал работать");
         cleaner.clean();

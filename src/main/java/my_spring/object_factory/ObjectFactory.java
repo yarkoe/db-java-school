@@ -10,6 +10,7 @@ import my_spring.object_factory.configuration.ObjectFactoryConfiguration;
 import my_spring.object_factory.configuration.ObjectFactoryConfigurationImpl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -41,7 +42,17 @@ public class ObjectFactory {
         T declaredObject = type.getDeclaredConstructor().newInstance();
 
         annotationsProcessor.process(declaredObject);
+        processInit(declaredObject);
 
         return declaredObject;
+    }
+
+    @SneakyThrows
+    private <T> void processInit(T declaredObject) {
+        for (Method method : declaredObject.getClass().getDeclaredMethods()) {
+            if (method.getName().startsWith("init")) {
+                method.invoke(declaredObject);
+            }
+        }
     }
 }
