@@ -32,16 +32,19 @@ public class ObjectFactory {
             throw new IllegalArgumentException();
         }
 
-        if (type.isInterface()) {
-            type = objectFactoryConfiguration.getImplementation(type);
-        }
-
+        type = resolveImple(type);
         T declaredObject = type.getDeclaredConstructor().newInstance();
-
         annotationsProcessor.process(declaredObject);
         processInit(declaredObject);
 
         return declaredObject;
+    }
+
+    private <T> Class<T> resolveImple(Class<T> type) {
+        if (type.isInterface()) {
+            type = objectFactoryConfiguration.getImplementation(type);
+        }
+        return type;
     }
 
     @SneakyThrows

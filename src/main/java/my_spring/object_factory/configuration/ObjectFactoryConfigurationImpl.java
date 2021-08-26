@@ -10,7 +10,7 @@ public class ObjectFactoryConfigurationImpl implements ObjectFactoryConfiguratio
 
     public ObjectFactoryConfigurationImpl() {
         interface2Implementation.put(Cleaner.class, CleanerImpl.class);
-        interface2Implementation.put(Speaker.class, ConsoleSpeaker.class);
+        interface2Implementation.put(Speaker.class, SpeakerWithTimeDecorator.class);
         interface2Implementation.put(IRobot.class, IRobot.class);
     }
 
