@@ -23,9 +23,9 @@ public class FieldAnnotationsProcessorImpl implements FieldAnnotationsProcessor 
     }
 
     @Override
-    public void process(Object declaredObject) {
+    public void process(Object o) {
         for (FieldAnnotationHandler annotationHandler : annotationHandlers) {
-            annotationHandler.handle(declaredObject);
+            annotationHandler.handle(o);
         }
     }
 }
