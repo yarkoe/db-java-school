@@ -7,6 +7,7 @@ import my_spring.object_factory.configuration.ObjectFactoryConfiguration;
 import my_spring.object_factory.configuration.ObjectFactoryConfigurationImpl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class ObjectFactory {
     private final static ObjectFactory instance = new ObjectFactory();
@@ -15,8 +16,12 @@ public class ObjectFactory {
         return instance;
     }
 
-    private final ObjectFactoryConfiguration objectFactoryConfiguration = new ObjectFactoryConfigurationImpl();
+    private ObjectFactoryConfiguration objectFactoryConfiguration = new ObjectFactoryConfigurationImpl();
     private final AnnotationsProcessor annotationsProcessor = new AnnotationsProcessorImpl();
+
+    public void setObjectFactoryConfiguration(ObjectFactoryConfiguration objectFactoryConfiguration) {
+        this.objectFactoryConfiguration = objectFactoryConfiguration;
+    }
 
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
@@ -28,6 +33,10 @@ public class ObjectFactory {
 
         for (Field field : type.getDeclaredFields()) {
             annotationsProcessor.processField(declaredObject, field);
+        }
+
+        for (Method method : type.getDeclaredMethods()) {
+            annotationsProcessor.processMethod(declaredObject, method);
         }
 
         return declaredObject;
