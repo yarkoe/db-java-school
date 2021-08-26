@@ -12,11 +12,39 @@ import java.util.stream.Collectors;
 
 public class BenchmarkAnnotationCreatorHandler implements ProxyAnnotationCreatorHandler {
     @Override
-    public <T> T create(T o) {
-        Class<T> type = (Class<T>) o.getClass();
-
-
+    public <T> T create(T obj) {
         Set<String> methodWithBenchmarkAnnotationNames = new HashSet<>();
+        fillMethodNames(obj, methodWithBenchmarkAnnotationNames);
+
+        if (!methodWithBenchmarkAnnotationNames.isEmpty()) {
+            return createProxyWithBenchmarkMethods(obj, methodWithBenchmarkAnnotationNames);
+        }
+
+        return obj;
+    }
+
+    private <T> T createProxyWithBenchmarkMethods(T obj, Set<String> methodWithBenchmarkAnnotationNames) {
+        return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
+                obj.getClass().getInterfaces(),
+                (proxy, method, args) -> {
+                    if (methodWithBenchmarkAnnotationNames.contains(method.getName())) {
+                        System.out.println("BENCHMARK STARTED FOR METHOD " + method.getName());
+                        long start = System.nanoTime();
+                        Object retVal = method.invoke(obj, args);
+                        long end = System.nanoTime();
+                        System.out.println(end - start);
+                        System.out.println("BENCHMARK ENDED FOR METHOD " + method.getName());
+
+                        return retVal;
+                    }
+                    return method.invoke(obj, args);
+                }
+        );
+    }
+
+    private <T> void fillMethodNames(T obj, Set<String> methodWithBenchmarkAnnotationNames) {
+        Class<T> type = (Class<T>) obj.getClass();
+
         if (type.isAnnotationPresent(Benchmark.class)) {
             List<String> methodNames = Arrays.stream(type.getDeclaredMethods())
                     .map(Method::getName).collect(Collectors.toList());
@@ -28,26 +56,5 @@ public class BenchmarkAnnotationCreatorHandler implements ProxyAnnotationCreator
                 }
             }
         }
-
-        if (!methodWithBenchmarkAnnotationNames.isEmpty()) {
-            return (T) Proxy.newProxyInstance(type.getClassLoader(),
-                    type.getInterfaces(),
-                    (proxy, method, args) -> {
-                        if (methodWithBenchmarkAnnotationNames.contains(method.getName())) {
-                            System.out.println("BENCHMARK STARTED FOR METHOD " + method.getName());
-                            long start = System.nanoTime();
-                            Object retVal = method.invoke(o, args);
-                            long end = System.nanoTime();
-                            System.out.println(end - start);
-                            System.out.println("BENCHMARK ENDED FOR METHOD " + method.getName());
-
-                            return retVal;
-                        }
-                        return method.invoke(o, args);
-                    }
-            );
-        }
-
-        return o;
     }
 }
