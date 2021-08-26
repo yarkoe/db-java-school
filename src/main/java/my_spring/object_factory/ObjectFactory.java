@@ -1,5 +1,8 @@
 package my_spring.object_factory;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import my_spring.object_factory.annotation.AnnotationsProcessor;
 import my_spring.object_factory.annotation.AnnotationsProcessorImpl;
@@ -9,6 +12,7 @@ import my_spring.object_factory.configuration.ObjectFactoryConfigurationImpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ObjectFactory {
     private final static ObjectFactory instance = new ObjectFactory();
 
@@ -16,12 +20,10 @@ public class ObjectFactory {
         return instance;
     }
 
+    @Setter
     private ObjectFactoryConfiguration objectFactoryConfiguration = new ObjectFactoryConfigurationImpl();
-    private final AnnotationsProcessor annotationsProcessor = new AnnotationsProcessorImpl();
-
-    public void setObjectFactoryConfiguration(ObjectFactoryConfiguration objectFactoryConfiguration) {
-        this.objectFactoryConfiguration = objectFactoryConfiguration;
-    }
+    @Setter
+    private AnnotationsProcessor annotationsProcessor = new AnnotationsProcessorImpl();
 
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
