@@ -30,6 +30,18 @@ public class BenchmarkAnnotationCreatorHandler implements ProxyAnnotationCreator
         return obj;
     }
 
+    private <T> T createProxyByInterface(T obj, Set<String> methodNames) {
+        return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
+                obj.getClass().getInterfaces(),
+                (proxy, method, args) -> handleBenchmark(obj, method, args, methodNames)
+        );
+    }
+
+    private <T> T createProxyByClass(T obj, Set<String> methodNames) {
+        return (T) Enhancer.create(obj.getClass(),
+                (MethodInterceptor) (o, method, args, proxy) -> handleBenchmark(obj, method, args, methodNames));
+    }
+
     @SneakyThrows
     private <T> T handleBenchmark(T obj, Method method, Object[] args, Set<String> methodNames) {
         if (methodNames.contains(method.getName())) {
@@ -44,18 +56,6 @@ public class BenchmarkAnnotationCreatorHandler implements ProxyAnnotationCreator
         }
 
         return (T) method.invoke(obj, args);
-    }
-
-    private <T> T createProxyByInterface(T obj, Set<String> methodNames) {
-        return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(),
-                obj.getClass().getInterfaces(),
-                (proxy, method, args) -> handleBenchmark(obj, method, args, methodNames)
-        );
-    }
-
-    private <T> T createProxyByClass(T obj, Set<String> methodNames) {
-        return (T) Enhancer.create(obj.getClass(),
-                (MethodInterceptor) (o, method, args, proxy) -> handleBenchmark(obj, method, args, methodNames));
     }
 
     private <T> void fillMethodNames(T obj, Set<String> methodWithBenchmarkAnnotationNames) {
