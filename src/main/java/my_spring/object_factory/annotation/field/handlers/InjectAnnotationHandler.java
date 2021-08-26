@@ -1,12 +1,12 @@
-package my_spring.object_factory.annotation.handlers;
+package my_spring.object_factory.annotation.field.handlers;
 
 import lombok.SneakyThrows;
 import my_spring.object_factory.ObjectFactory;
-import my_spring.object_factory.annotation.InjectByType;
+import my_spring.object_factory.annotation.field.InjectByType;
 
 import java.lang.reflect.Field;
 
-public class InjectAnnotationHandler implements AnnotationHandler {
+public class InjectAnnotationHandler implements FieldAnnotationHandler {
     @SneakyThrows
     @Override
     public void handle(Object declaredObject) {

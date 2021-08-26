@@ -1,12 +1,11 @@
-package my_spring.object_factory.annotation;
+package my_spring.object_factory.annotation.proxy;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface InjectByType {
-
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface Benchmark {
 }

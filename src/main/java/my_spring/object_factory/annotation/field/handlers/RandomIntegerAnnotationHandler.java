@@ -1,13 +1,12 @@
-package my_spring.object_factory.annotation.handlers;
+package my_spring.object_factory.annotation.field.handlers;
 
 import homework.lab3.RandomUtils;
 import lombok.SneakyThrows;
-import my_spring.object_factory.annotation.RandomInteger;
-import my_spring.object_factory.annotation.handlers.AnnotationHandler;
+import my_spring.object_factory.annotation.field.RandomInteger;
 
 import java.lang.reflect.Field;
 
-public class RandomIntegerAnnotationHandler implements AnnotationHandler {
+public class RandomIntegerAnnotationHandler implements FieldAnnotationHandler {
     @SneakyThrows
     @Override
     public void handle(Object declaredObject) {

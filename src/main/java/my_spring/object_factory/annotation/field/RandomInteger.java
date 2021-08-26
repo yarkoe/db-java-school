@@ -1,4 +1,4 @@
-package my_spring.object_factory.annotation;
+package my_spring.object_factory.annotation.field;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

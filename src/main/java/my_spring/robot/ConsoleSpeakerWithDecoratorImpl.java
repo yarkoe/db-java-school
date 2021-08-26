@@ -1,6 +1,6 @@
 package my_spring.robot;
 
-import my_spring.object_factory.annotation.InjectByType;
+import my_spring.object_factory.annotation.field.InjectByType;
 
 public class ConsoleSpeakerWithDecoratorImpl extends ConsoleSpeaker {
     @InjectByType

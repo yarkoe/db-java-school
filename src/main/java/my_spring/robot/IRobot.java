@@ -1,7 +1,7 @@
 package my_spring.robot;
 
 import lombok.NoArgsConstructor;
-import my_spring.object_factory.annotation.InjectByType;
+import my_spring.object_factory.annotation.field.InjectByType;
 
 @NoArgsConstructor
 public class IRobot {

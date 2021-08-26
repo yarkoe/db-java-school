@@ -4,14 +4,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import my_spring.object_factory.annotation.AnnotationsProcessor;
-import my_spring.object_factory.annotation.AnnotationsProcessorImpl;
+import my_spring.object_factory.annotation.field.FieldAnnotationsProcessor;
+import my_spring.object_factory.annotation.field.FieldAnnotationsProcessorImpl;
+import my_spring.object_factory.annotation.proxy.Benchmark;
 import my_spring.object_factory.configuration.ObjectFactoryConfiguration;
 import my_spring.object_factory.configuration.ObjectFactoryConfigurationImpl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ObjectFactory {
@@ -24,7 +24,7 @@ public class ObjectFactory {
     @Setter
     private ObjectFactoryConfiguration objectFactoryConfiguration = new ObjectFactoryConfigurationImpl();
     @Setter
-    private AnnotationsProcessor annotationsProcessor = new AnnotationsProcessorImpl();
+    private FieldAnnotationsProcessor annotationsProcessor = new FieldAnnotationsProcessorImpl();
 
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
@@ -36,6 +36,22 @@ public class ObjectFactory {
         T declaredObject = type.getDeclaredConstructor().newInstance();
         annotationsProcessor.process(declaredObject);
         processInit(declaredObject);
+
+        if (type.isAnnotationPresent(Benchmark.class)) {
+            return (T) Proxy.newProxyInstance(type.getClassLoader(),
+                    type.getInterfaces(),
+                    (proxy, method, args) -> {
+                        System.out.println("BENCHMARK STARTED FOR METHOD " + method.getName());
+                        long start = System.nanoTime();
+                        Object retVal = method.invoke(declaredObject, args);
+                        long end = System.nanoTime();
+                        System.out.println(end - start);
+                        System.out.println("BENCHMARK ENDED FOR METHOD " + method.getName());
+
+                        return retVal;
+                    }
+                    );
+        }
 
         return declaredObject;
     }
