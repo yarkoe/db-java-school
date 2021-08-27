@@ -4,6 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="real_spring.BeanDefinitionValidatorBeanFactoryPostProcessor"/>
+    <bean class="real_spring.InjectRandomNameAnnotationBeanPostProcessor"/>
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
 
     <bean id="s" class="java.lang.String">
