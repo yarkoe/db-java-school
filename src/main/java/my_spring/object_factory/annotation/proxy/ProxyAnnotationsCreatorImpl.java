@@ -23,8 +23,9 @@ public class ProxyAnnotationsCreatorImpl implements ProxyAnnotationsCreator {
 
     @Override
     public <T> T createProxy(T obj) {
+        Class<T> objType = (Class<T>) obj.getClass();
         for (ProxyAnnotationCreatorHandler annotationHandler : annotationHandlers) {
-            obj = annotationHandler.create(obj);
+            obj = annotationHandler.create(objType, obj);
         }
 
         return obj;
