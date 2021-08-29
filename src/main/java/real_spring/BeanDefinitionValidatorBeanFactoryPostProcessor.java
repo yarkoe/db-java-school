@@ -13,7 +13,7 @@ public class BeanDefinitionValidatorBeanFactoryPostProcessor implements BeanFact
         String[] definitionNames = beanFactory.getBeanDefinitionNames();
         for (String definitionName : definitionNames) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(definitionName);
-            if (beanDefinition.isPrototype() && !Objects.equals(beanDefinition.getDestroyMethodName(), "")) {
+            if (beanDefinition.isPrototype() && beanDefinition.getDestroyMethodName() != null) {
                 System.out.println("WARNING!!! " + beanDefinition.getBeanClassName() + " is prototype and has destroy method");
             }
         }

@@ -15,8 +15,7 @@ public class InjectRandomNameAnnotationBeanPostProcessor implements BeanPostProc
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class<?> type = bean.getClass();
         for (Field field : type.getDeclaredFields()) {
-            InjectRandomName annotation = field.getAnnotation(InjectRandomName.class);
-            if (annotation != null) {
+            if (field.isAnnotationPresent(InjectRandomName.class)) {
                 field.setAccessible(true);
                 field.set(bean, faker.gameOfThrones().character());
             }
