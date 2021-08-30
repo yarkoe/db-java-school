@@ -5,14 +5,14 @@ import real_spring.never_use_switch.Message;
 import real_spring.never_use_switch.MessageChannel;
 
 @Component
-public class SMSMessageSender implements MessageSender {
+public class TelegramMessageSender implements MessageSender {
     @Override
     public void send(Message message) {
-        System.out.println("Sent via SMS: " + message.getContent());
+        System.out.println("Sent via phone: " + message.getContent());
     }
 
     @Override
     public MessageChannel getMessageChannel() {
-        return MessageChannel.SMS;
+        return MessageChannel.TELEGRAM;
     }
 }
