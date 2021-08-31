@@ -17,7 +17,7 @@ public class DbAspect {
     @Value("#{'${mails}'.split(',')}")
     private List<String> mails;
 
-    private final Set<RuntimeException> exceptions = new HashSet<>();
+    private RuntimeException lastException;
 
     @SneakyThrows
     @Around("execution(* real_spring.db_exception..*.*(..))")
@@ -25,9 +25,9 @@ public class DbAspect {
         try {
             return joinPoint.proceed();
         } catch (DbException dbException) {
-            if (!exceptions.contains(dbException)) {
+            if (lastException == null || !lastException.equals(dbException)) {
                 mails.forEach(mail -> System.out.println("Sending to mail: " + mail));
-                exceptions.add(dbException);
+                lastException = dbException;
             }
 
             throw dbException;
