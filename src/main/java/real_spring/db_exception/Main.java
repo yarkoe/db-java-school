@@ -7,6 +7,16 @@ public class Main {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DbConfig.class);
 
         DbController controller = context.getBean(DbController.class);
-        controller.processDbService();
+        try {
+            controller.processDbService();
+        } catch (DbException e) {
+            System.out.println("Db exception 1");
+        }
+
+        try {
+            controller.processDbService();
+        } catch (DbException e) {
+            System.out.println("Db exception 2");
+        }
     }
 }
