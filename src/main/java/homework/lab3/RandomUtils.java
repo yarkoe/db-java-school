@@ -10,8 +10,8 @@ public class RandomUtils {
         return left + random.nextInt(right - left + 1);
     }
 
-    public static <T> T getRandomElement(List<T> list) {
-        int i = RandomUtils.generateIntBetweenBorders(0, list.size() - 1);
-        return list.get(i);
+    public static <T> T getRandomElement(List<T> elements) {
+        int index = generateIntBetweenBorders(0, elements.size() - 1);
+        return elements.get(index);
     }
 }
